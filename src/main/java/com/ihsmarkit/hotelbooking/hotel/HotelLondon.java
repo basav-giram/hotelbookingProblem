@@ -11,14 +11,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class HotelLondon implements Hotel {
 
+    //Single source for all booking information implemented with thread-safe ConcurrentHashMap
     private final ConcurrentHashMap<String, List<Pair<Integer, LocalDate>>> guestToRoomWithDate;
-    private Set<Integer> allRooms = Collections.synchronizedSet(new HashSet<Integer>());
+
+    //Immutable set represents all rooms in the hotel
+    private final Set<Integer> allRooms;
 
     public HotelLondon(Set<Integer> allRooms, ConcurrentHashMap<String, List<Pair<Integer, LocalDate>>> guestToRoomWithDate) {
-        this.allRooms = allRooms;
+        this.allRooms = Collections.unmodifiableSet(allRooms);
         this.guestToRoomWithDate = guestToRoomWithDate;
     }
 
+    @Override
     public synchronized void addBooking(String guest, Integer room, LocalDate date) throws RoomException {
         if (!allRooms.contains(room))
             throw new InvalidRoomNumberException("Invalid room number: " + room);
@@ -35,6 +39,7 @@ public final class HotelLondon implements Hotel {
             throw new RoomNotAvailableException(String.format("Room: %s is not available on %s", room, date));
     }
 
+    @Override
     public synchronized boolean isRoomAvailable(Integer room, LocalDate date) {
         for (List<Pair<Integer, LocalDate>> roomWithDateList : guestToRoomWithDate.values()) {
             if (roomWithDateList.contains(new Pair<>(room, date)))
@@ -43,8 +48,9 @@ public final class HotelLondon implements Hotel {
         return true;
     }
 
+    @Override
     public synchronized Iterable<Integer> getAvailableRooms(LocalDate date) {
-        Set<Integer> availableRooms = allRooms;
+        Set<Integer> availableRooms = new HashSet<>(allRooms);
 
         for (List<Pair<Integer, LocalDate>> roomWithDateList : guestToRoomWithDate.values())
             for (Pair<Integer, LocalDate> roomWithDate : roomWithDateList) {

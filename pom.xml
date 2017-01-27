@@ -10,6 +10,7 @@
     <properties>
         <jdk.version>1.8</jdk.version>
         <junit.version>4.12</junit.version>
+        <concurrentunit.version>0.4.2</concurrentunit.version>
     </properties>
 
     <build>
@@ -30,7 +31,10 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>concurrentunit</artifactId>
+            <version>${concurrentunit.version}</version>
+        </dependency>
     </dependencies>
-
-
 </project>
