@@ -18,7 +18,7 @@ public final class HotelLondon implements Hotel {
         this.guestToRoomWithDate = guestToRoomWithDate;
     }
 
-    public void addBooking(String guest, Integer room, Date date) throws RoomException {
+    public synchronized void addBooking(String guest, Integer room, Date date) throws RoomException {
         if (!allRooms.contains(room))
             throw new InvalidRoomNumberException("Invalid room number: " + room);
         if (isRoomAvailable(room, date)) {
@@ -34,7 +34,7 @@ public final class HotelLondon implements Hotel {
             throw new RoomNotAvailableException(String.format("Room: %s is not available on %s", room, date));
     }
 
-    public boolean isRoomAvailable(Integer room, Date date) {
+    public synchronized boolean isRoomAvailable(Integer room, Date date) {
         for (List<Pair<Integer, Date>> roomWithDateList : guestToRoomWithDate.values()) {
             if (roomWithDateList.contains(new Pair<>(room, date)))
                 return false;
@@ -42,7 +42,7 @@ public final class HotelLondon implements Hotel {
         return true;
     }
 
-    public Iterable<Integer> getAvailableRooms(Date date) {
+    public synchronized Iterable<Integer> getAvailableRooms(Date date) {
         Set<Integer> availableRooms = allRooms;
 
         for (List<Pair<Integer, Date>> roomWithDateList : guestToRoomWithDate.values())
