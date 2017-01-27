@@ -8,8 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -20,8 +19,8 @@ import static org.junit.Assert.assertEquals;
 public class BookingManagerTest {
     BookingManager bookingManager;
 
-    Date today = new SimpleDateFormat("yyyy-MM-dd").parse("2017-01-26");
-    Date tmrw = new SimpleDateFormat("yyyy-MM-dd").parse("2012-01-27");
+    LocalDate today = LocalDate.of(2017, 01, 26);
+    LocalDate tmrw = LocalDate.of(2017, 01, 27);
 
     public BookingManagerTest() throws ParseException {
     }
@@ -55,6 +54,7 @@ public class BookingManagerTest {
     @Test
     public void thereWillBeThreeAvailableRoomsForTomorrow() throws Exception {
         assertEquals(Stream.of(101, 102, 201).collect(Collectors.toCollection(HashSet::new)), bookingManager.getAvailableRooms(tmrw));
+
     }
 
 }

@@ -2,12 +2,12 @@ package com.ihsmarkit.hotelbooking.hotel;
 
 import com.ihsmarkit.hotelbooking.exception.RoomException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface Hotel {
-    boolean isRoomAvailable(Integer room, Date date);
+    boolean isRoomAvailable(Integer room, LocalDate date);
 
-    void addBooking(String guest, Integer room, Date date) throws RoomException;
+    void addBooking(String guest, Integer room, LocalDate date) throws RoomException;
 
-    Iterable<Integer> getAvailableRooms(Date date);
+    Iterable<Integer> getAvailableRooms(LocalDate date);
 }
