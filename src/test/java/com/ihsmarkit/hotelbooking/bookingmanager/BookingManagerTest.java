@@ -35,6 +35,7 @@ public class BookingManagerTest {
 
     @Test(expected = RoomNotAvailableException.class)
     public void roomWillNotBeAvailable() throws RoomException {
+        assertEquals(false, bookingManager.isRoomAvailable(101, today));
         bookingManager.addBooking("James", 101, today);
     }
 
